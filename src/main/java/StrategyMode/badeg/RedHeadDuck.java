@@ -1,6 +1,7 @@
-package introduction.badeg;
+package StrategyMode.badeg;
 
-public class MallardDuck extends Duck{
+@SuppressWarnings("unused")
+public class RedHeadDuck extends Duck{
     @Override
     public void quack() {
 
