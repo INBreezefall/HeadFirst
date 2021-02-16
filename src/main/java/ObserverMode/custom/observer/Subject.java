@@ -1,4 +1,4 @@
-package ObserverMode.jdk.observer.subject;
+package ObserverMode.custom.observer;
 
 import java.util.Vector;
 import java.util.concurrent.atomic.AtomicBoolean;
