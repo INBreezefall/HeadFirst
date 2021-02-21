@@ -33,4 +33,8 @@ public class CurrentConditionsDisplay implements Observer, DisplayElement {
         System.out.println("Current conditions: " + temperature + "F degrees and "
                 + humidity + "% humidity");
     }
+
+    public void exit() {
+        weatherData.removeObserver(this);
+    }
 }

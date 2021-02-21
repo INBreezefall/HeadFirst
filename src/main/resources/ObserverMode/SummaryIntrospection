@@ -9,9 +9,9 @@
                 契约指代——Subject调用Observer的update() 及 Observer调用Subject的register/remove()
 
     注:
-        1.存在多个依赖者时，不能依赖特定的通知次序 [要看具体实现]
-        2.观察者模式存在 推、拉 两种数据传输方式，推即是 update(Object data) 拉即是 Subject.getter()
-        3.Java.util.Observable 是 抽象类，接口实现 放在了 ObserverMode.custom，区别是，接口不能加锁
+        1.存在多个观察者时，不能依赖特定的通知次序 [要看具体实现]
+        2.观察者模式存在 推、拉 两种数据传输方式，推即是 Observer.update(Object data) 拉即是 Subject.getter()
+        3.Java.util.Observable 是 类，接口实现 放在了 ObserverMode.custom，区别是，接口不能加锁
 
     将变化与不变抽离出来 在 观察者模式中 体现
         1.Observers 类型、数量 是变化的
