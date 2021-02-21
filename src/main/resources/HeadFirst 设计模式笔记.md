@@ -110,10 +110,12 @@ HeadFirst 认为有效的学习方法
 		优点: 最大程度上 复用代码，且可运行时动态改变子类行为的具体实现
 	
 ### 气象布告版 [观察者]
-	原设计: 
-		缺点: 
-	观察者模式设计:
-		优点: 
+	原设计: 各个布告板不继承自同一基类 也未 实现同一接口，且 WeatherData 将各个布告板 在构造器()及notify()一个一个调用
+		缺点: 新增与删除 布告板 将会修改 WeatherData 类的 构造器()及notify()
+	观察者模式设计: 各个布告板 均实现 Observer 类内组合 Subject 实例对象
+			WeatherData 实现 Subject 接口 类内组合 Array[Observer] 实例对象
+		优点: Subject.register() 注册方法 由 Observer 实例类内 Subject实例对象 执行
+			Observer 注册 + 移除 及不再修改 Subject 类代码 [构造器及notify()]	
 
 ### 咖啡与调料 [装饰者]
 	原设计: 
