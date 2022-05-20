@@ -1,0 +1,12 @@
+实质
+    1.将一个函数(Invoke 调用函数) 中 多个外部类(Outsider) 且不同方法名称 的 高耦合 拆分到 各个外部类的中间层类(Command Interface)中
+        以统一的行为接口 Command Interface 作为统一调用封装，从而将 Invoke 调用函数 的 高耦合 解开
+        Invoke 调用函数 内部只需要写 Command Interface 统一函数名即可
+    2.宏命令 是 一组命令的简单延伸
+    3.如果想要撤销多步，那么只需要 将 previousCommand 改为 Stack 存储多个 Command 即可
+    4.将 请求/一段代码 丰富为 一个对象 从而实现 参数化，且可 多次被调用
+        实例用途①: 工作队列
+            Worker 从 工作队列 取出一个 Command，执行其 execute() 方法, Worker 不关心 execute() 内部到底是什么
+        实例用途②: 日志请求(①的延展)
+            为避免死机丢失内存数据，会在接受到请求时 先写入日志中 store()，如果发生了宕机，则从日志中顺序读取请求 load()
+            然后再依次执行 execute() 方法，其中 Invoker 不关心 具体请求执行的内容，只关心 执行 及 异常恢复。
