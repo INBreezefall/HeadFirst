@@ -1,4 +1,4 @@
-package IteratorPartten.badeg;
+package IteratorPatten.badeg;
 
 public class DinerMenu {
     static final int MAX_ITEMS = 6;

@@ -1,9 +1,9 @@
-package IteratorPartten.greateg;
+package IteratorPatten.greateg;
 
-import IteratorPartten.greateg.menu.Menu;
-import IteratorPartten.greateg.menu.subclass.CafeMenu;
-import IteratorPartten.greateg.menu.subclass.DinerMenu;
-import IteratorPartten.greateg.menu.subclass.PancakeHouseMenu;
+import IteratorPatten.greateg.menu.Menu;
+import IteratorPatten.greateg.menu.subclass.CafeMenu;
+import IteratorPatten.greateg.menu.subclass.DinerMenu;
+import IteratorPatten.greateg.menu.subclass.PancakeHouseMenu;
 
 import java.util.ArrayList;
 

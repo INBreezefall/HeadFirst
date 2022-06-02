@@ -1,12 +1,8 @@
-package IteratorPartten.greateg.menu.subclass;
-
-import IteratorPartten.badeg.MenuItem;
-import IteratorPartten.greateg.menu.Menu;
+package IteratorPatten.badeg;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class PancakeHouseMenu implements Menu {
+public class PancakeHouseMenu {
     private final ArrayList<MenuItem> menuItems;
 
     public PancakeHouseMenu() {
@@ -23,10 +19,5 @@ public class PancakeHouseMenu implements Menu {
 
     public ArrayList<MenuItem> getMenuItems() {
         return menuItems;
-    }
-
-    @Override
-    public Iterator<MenuItem> iterator() {
-        return menuItems.iterator();
     }
 }

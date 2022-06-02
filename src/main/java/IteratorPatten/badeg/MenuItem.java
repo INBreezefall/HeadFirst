@@ -1,4 +1,4 @@
-package IteratorPartten.badeg;
+package IteratorPatten.badeg;
 
 public class MenuItem {
     private final String name;

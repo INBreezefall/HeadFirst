@@ -1,4 +1,4 @@
-package IteratorPartten.badeg;
+package IteratorPatten.badeg;
 
 import java.util.ArrayList;
 

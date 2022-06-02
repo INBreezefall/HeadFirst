@@ -1,7 +1,7 @@
-package IteratorPartten.greateg.menu.subclass;
+package IteratorPatten.greateg.menu.subclass;
 
-import IteratorPartten.badeg.MenuItem;
-import IteratorPartten.greateg.menu.Menu;
+import IteratorPatten.badeg.MenuItem;
+import IteratorPatten.greateg.menu.Menu;
 
 import java.util.Hashtable;
 import java.util.Iterator;
