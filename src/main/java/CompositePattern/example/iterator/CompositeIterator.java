@@ -3,6 +3,8 @@ package CompositePattern.example.iterator;
 import CompositePattern.example.composite.Menu;
 import CompositePattern.example.composite.MenuComponent;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
@@ -42,9 +44,7 @@ public class CompositeIterator implements Iterator<MenuComponent> {
         } else {
             Iterator<MenuComponent> iterator = stack.peek();
             // System.out.println("[hasNext] 1.2 " + this.name + " " + stack);
-            for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-                //// System.out.println(ste);
-            }
+            // printStack();
             // 2.子菜单 递归遍历
             // 2.1 栈顶 子菜单 Iterator 内部没有元素 则 弹栈 并 回到次栈顶 同级或上级组件 Iterator 再触发 hasNext 执行 [递归点 1]
             // 如果 子菜单 stack 栈顶仍为空 则 子菜单.hasNext() 返回 false 至 顶级菜单递归调用处 ↓↓↓ if (!iterator.hasNext())] 顶级菜单 stack 弹出 栈顶的子菜单
@@ -73,9 +73,7 @@ public class CompositeIterator implements Iterator<MenuComponent> {
     public MenuComponent next() {
         // 1.查看栈顶 迭代器(Menu CompositeIterator)
         Iterator<MenuComponent> iterator = stack.peek();
-        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
-            //// System.out.println(ste);
-        }
+        // printStack();
         // System.out.println("[next] 1 peek: cur=" + this.name + " target=" + iterator + " " + Thread.currentThread().getName());
         // 2.递归取出下一个 组件 [取到 ArrayList$Itr 就不会再递归 CompositeIterator.next() 只是取 ArrayList 第一个元素 Pasta]
         // [Iterator instanceof CompositeIterator 才会递归当前 next() 方法] [递归点 2]
@@ -107,5 +105,17 @@ public class CompositeIterator implements Iterator<MenuComponent> {
     @Override
     public String toString() {
         return name;
+    }
+
+    public void printStack() {
+        for (StackTraceElement ste : Thread.currentThread().getStackTrace()) {
+            System.out.println(ste);
+        }
+    }
+    public void printStackWithThrowable() {
+        StringWriter sw = new StringWriter();
+        new Throwable("").printStackTrace(new PrintWriter(sw));
+        String stackTrace = sw.toString();
+        System.out.println(stackTrace);
     }
 }
