@@ -67,16 +67,28 @@ public class GumballMachine {
         state.ejectQuarter();
     }
 
-    public void truckCrank() {
+    public void turnCrank() {
         state.turnCrank();
         state.dispense();   // dispense 是一个状态内部动作，并不是一个开放给 用户 的 公开动作
     }
 
     // 6.状态机内部动作
-    void releaseBall() {
+    public void releaseBall() {
         System.out.println("A gumball rolling out the slot...");
         if (count != 0) {
             count -= 1;
         }
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    @Override
+    public String toString() {
+        return "GumballMachine{" +
+                "state=" + state +
+                ", count=" + count +
+                '}';
     }
 }
