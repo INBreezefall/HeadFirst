@@ -3,10 +3,13 @@ package StatePattern.greateg.stateImpl;
 import StatePattern.greateg.GumballMachine;
 import StatePattern.greateg.GumballMachineState;
 
+import java.util.Random;
+
 /**
  * 应用组合 而非 继承
  */
 public class HasQuarterState implements GumballMachineState {
+    Random randomWinner = new Random(System.currentTimeMillis());
     GumballMachine gumballMachine;
 
     public HasQuarterState(GumballMachine gumballMachine) {
@@ -27,7 +30,12 @@ public class HasQuarterState implements GumballMachineState {
     @Override
     public void turnCrank() {
         System.out.println("You turned...");
-        gumballMachine.setState(gumballMachine.getSoldState());
+        int winner = randomWinner.nextInt(10);
+        if (winner == 0 && gumballMachine.getCount() > 0) {
+            gumballMachine.setState(gumballMachine.getWinnerState());
+        } else {
+            gumballMachine.setState(gumballMachine.getSoldState());
+        }
     }
 
     @Override

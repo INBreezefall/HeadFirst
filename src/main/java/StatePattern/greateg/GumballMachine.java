@@ -3,6 +3,7 @@ package StatePattern.greateg;
 import StatePattern.greateg.stateImpl.HasQuarterState;
 import StatePattern.greateg.stateImpl.NoQuarterState;
 import StatePattern.greateg.stateImpl.SoldState;
+import StatePattern.greateg.stateImpl.WinnerState;
 
 /**
  * 改造步骤
@@ -17,16 +18,19 @@ public class GumballMachine {
     GumballMachineState noQuarterState;
     GumballMachineState hasQuarterState;
     GumballMachineState soldState;
+    GumballMachineState winnerState;
     GumballMachineState state = soldOutState;
-    int count = 0;
+    int count;
 
     // 2.构造器初始化
     public GumballMachine(int numberGumballs) {
         count = numberGumballs;
+        // 优化 —— 状态变量共享 通过 静态实例
         soldOutState = new SoldState(this);
         noQuarterState = new NoQuarterState(this);
         hasQuarterState = new HasQuarterState(this);
         soldState = new SoldState(this);
+        winnerState = new WinnerState(this);
         if (numberGumballs > 0) {
             state = noQuarterState;
         }
@@ -49,10 +53,6 @@ public class GumballMachine {
         return soldState;
     }
 
-    public GumballMachineState getState() {
-        return state;
-    }
-
     // 4.更新状态机当前状态
     public void setState(GumballMachineState state) {
         this.state = state;
@@ -63,12 +63,23 @@ public class GumballMachine {
         state.insertQuarter();
     }
 
+    @SuppressWarnings("unused")
     public void ejectQuarter() {
         state.ejectQuarter();
     }
 
+    /**
+     * <pre>10 抽 1 特奖状态 是 摇杆行为执行后 的 三种状态(另外两种是售出、售罄) 中 的一种
+     * 准确来说是 已插入硬币状态 -摇杆-> 10 抽 1 特奖状态
+     *                      -   -> 售出状态
+     *
+     *               售出状态 -   -> 售罄状态 [售罄状态 不与 已插入硬币状态 直接跳转 而是 间接通过 售出状态 跳转]
+     *                      也就是 此时需要修改的状态跳转逻辑 在 HasQuarteerState
+     * </pre>
+     */
     public void turnCrank() {
         state.turnCrank();
+        // 这里可以再优化下 —— 当 turnCrank 没有插入 25 美分 时 不应调用 dispense
         state.dispense();   // dispense 是一个状态内部动作，并不是一个开放给 用户 的 公开动作
     }
 
@@ -90,5 +101,9 @@ public class GumballMachine {
                 "state=" + state +
                 ", count=" + count +
                 '}';
+    }
+
+    public GumballMachineState getWinnerState() {
+        return winnerState;
     }
 }
