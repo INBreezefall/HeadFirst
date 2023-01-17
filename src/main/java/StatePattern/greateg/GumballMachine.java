@@ -4,6 +4,7 @@ import StatePattern.greateg.stateImpl.HasQuarterState;
 import StatePattern.greateg.stateImpl.NoQuarterState;
 import StatePattern.greateg.stateImpl.SoldState;
 import StatePattern.greateg.stateImpl.WinnerState;
+import StatePattern.greateg.stateImpl.SoldOutState;
 
 /**
  * 改造步骤
@@ -26,7 +27,7 @@ public class GumballMachine {
     public GumballMachine(int numberGumballs) {
         count = numberGumballs;
         // 优化 —— 状态变量共享 通过 静态实例
-        soldOutState = new SoldState(this);
+        soldOutState = new SoldOutState(this);
         noQuarterState = new NoQuarterState(this);
         hasQuarterState = new HasQuarterState(this);
         soldState = new SoldState(this);
