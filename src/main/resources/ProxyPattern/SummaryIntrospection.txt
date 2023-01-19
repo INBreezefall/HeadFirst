@@ -1,0 +1,61 @@
+代理模式
+    演变路径
+        ①相同 JVM: 直接通过 地址符号引用 获取 RealObject
+        ②不同 JVM: 客户端 与 服务端 通过 自己所处 JVM 内的代理对象 进行 间接调用 = RMI Remote Method Invocation
+            ClientJVM: Client -> ServiceProxy = RMI STUB [假装有 Service 的所有方法及属性] []
+                                    NetworkIO (Socket ip port)
+                                        || methodName & parametersValue / returnValue
+                                    NetworkIO (Socket ip port)
+            ServiceJVM: Service -> ClientProxy = RMI SKELETON
+
+            Client       | network |       RMI Registry
+                                                ||
+                                             Service
+     RMI 使用步骤
+        1.创建 远程服务接口
+            IService Extends Remote
+                所有方法都抛出 throws RemoteException
+                方法返回值 primitive or Array or Serializable
+        2.创建 远程服务实现
+            ServiceImpl extends UnicastRemoteObject implements IService
+                UnicastRemoteObject 超类在构造器中抛出了 RemoteException 子类构造器也必须显示抛出
+        注: RMI STUB & SKELETON
+            STUB 类 位于 Client Classpath 内，用于 将远端服务代理对象反序列
+            SKELETON 类 位于 Server 侧的 rmiregiestry 服务内
+            JDK 1.8+: 为 JRMP 生成和使用 骨架 SKELETON 及静态存根 STUB 已过时。
+                骨架不再必要, 而静态存根已由动态生成的存根取代。建议用户不再使用 rmic 来生成骨架和静态存根
+            1.Stub 存根已无需手动放置于 Client 侧
+            2.Skeleton 骨架已被废弃
+            3.rmiregistry 可以作为 Server 的一个线程 通过 LocateRegistry.createRegistry(1099);
+                也可以通过 rmiregistry shell 命令 作为一个进程。
+            4.rmic 是对 class 使用的 同时需要 保证正确的 class 文件路径 如下相同
+                cd /Users/inbreeze/IdeaProjects/HeadFirst/target/classes
+                rmic ProxyPattern.remoteproxy.diversejvm.service.MyRemoteServiceImpl
+        3.启动 RMI 注册服务 [rmiregistry] 重点: 此处可能出现 ClassNotFoundException
+            重点:
+                1.如果在本地启动 rmiregistry 进程，则需要启动在 完整包路径顶层目录
+                例如: ProxyPattern.remoteproxy.diversejvm.service.MyRemoteService
+                    则 rmiregistry 启动在 /Users/inbreeze/IdeaProjects/HeadFirst/target/classes
+                $ tree /Users/inbreeze/IdeaProjects/HeadFirst/target/classes
+                └── ProxyPattern
+                          ├── SummaryIntrospection
+                          └── remoteproxy
+                              └── diversejvm
+                                        ├── client
+                                        │         └── MyClient.class
+                                        └── service
+                                            ├── MyRemoteService.class
+                                            └── MyRemoteServiceImpl.class
+                2.LocateRegistry.createRegistry(1099); 将 rmiregistry 作为线程启动也可解决上述问题
+                3.如果出现 access deny 那就是涉及到 codebase 安全管理策略 java.rmi.server.useCodebaseOnly
+                    RMI 存在安全问题，故需要严格的安全管理
+                4.rmiregistry 要在 server 前启动，即便是在代码中创建本地 rmiregistry 也应第一顺位。
+            注: -Djava.rmi.server.codebase=file:///Users/inbreeze/IdeaProjects/HeadFirst/target/classes/
+                file = 本地文件，但显然这个并未生效，网上也没有正确案例包括官方，需要看 rmiregistry 源代码进行解析
+                通常使用情况是 -Djava.rmi.server.codebase="http://localhost:8080"
+        4.启动 远程服务 [java Implement.java]
+        5.客户端 发送请求至 服务端 IP 的 RMI Registry 服务进程
+            Naming.lookup("rmi://IP:PORT/ServiceName)
+            Registry 返回 Stub 存根至 Client，Client 调用 Stub 对象，Stub 对象 发送请求至 Skeleton 对象
+            Skeleton 对象 真实调用 Server 服务 获取结果，然后把结果通过网络传递给客户端 Stub 对象
+            整个过程由 RMI 底层负责实现网络传输的序列化和反序列化
