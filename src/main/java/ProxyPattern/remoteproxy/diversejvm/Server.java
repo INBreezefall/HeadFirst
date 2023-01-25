@@ -1,4 +1,4 @@
-package ProxyPattern.remoteproxy.rmi.hello;
+package ProxyPattern.remoteproxy.diversejvm;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -19,7 +19,8 @@ public class Server implements Hello {
 
         try {
             Server obj = new Server();
-            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 0);
+            // port 0 = 随机端口
+            Hello stub = (Hello) UnicastRemoteObject.exportObject(obj, 1199);
 
             // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.getRegistry();
