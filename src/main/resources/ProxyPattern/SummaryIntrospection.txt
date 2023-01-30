@@ -59,3 +59,13 @@
             Registry 返回 Stub 存根至 Client，Client 调用 Stub 对象，Stub 对象 发送请求至 Skeleton 对象
             Skeleton 对象 真实调用 Server 服务 获取结果，然后把结果通过网络传递给客户端 Stub 对象
             整个过程由 RMI 底层负责实现网络传输的序列化和反序列化
+
+    代理模式含义
+        ImageProxy
+            作用: 代理真正的 Image
+            意义: 控制 访问 Image 整个过程
+            具体控制内容: 在未下载完成图片前，通过 显示文字 来代替 显示图片，当图片下载完成就绪后，显示真实图片
+
+        Image
+            被代理对象
+            作用: 展示一个图像在 Component 中
