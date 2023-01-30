@@ -5,7 +5,7 @@ import java.awt.*;
 import java.net.URL;
 
 public class ImageProxy implements Icon {
-    private ImageIcon imageIcon;
+    private ImageIcon trueImage;
     private final URL imageURL;
     private boolean retrieving;
 
@@ -16,9 +16,9 @@ public class ImageProxy implements Icon {
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         // image 已加载完成 / 加载过
-        if (imageIcon != null) {
+        if (trueImage != null) {
             System.out.printf("....paint true image(x=%s,y=%s)...%n", x, y);
-            imageIcon.paintIcon(c, g, x, y);
+            trueImage.paintIcon(c, g, x, y);
         } else {
             // ImageProxy.paintIcon() 时 由于 imageIcon == null 故 x & y 都被减到了 0, 0
             g.drawString("Loading CD Cover...", x + 400, y + 300);
@@ -31,7 +31,7 @@ public class ImageProxy implements Icon {
                 // 下载完成 触发重绘
                 Thread retrievalThread = new Thread(() -> {
                     // 下载图片
-                    imageIcon = new ImageIcon(imageURL, "CD Cover");
+                    trueImage = new ImageIcon(imageURL, "CD Cover");
                     System.out.println("....repainting...");
                     // 下载完成 触发重绘
                     c.repaint();
@@ -44,8 +44,8 @@ public class ImageProxy implements Icon {
 
     @Override
     public int getIconWidth() {
-        if (imageIcon != null) {
-            return imageIcon.getIconWidth();
+        if (trueImage != null) {
+            return trueImage.getIconWidth();
         } else {
             return 800;
         }
@@ -53,8 +53,8 @@ public class ImageProxy implements Icon {
 
     @Override
     public int getIconHeight() {
-        if (imageIcon != null) {
-            return imageIcon.getIconHeight();
+        if (trueImage != null) {
+            return trueImage.getIconHeight();
         } else {
             return 600;
         }

@@ -36,6 +36,7 @@ public class Main {
             // 为当前 新建的项目 增加点击事件监听器
             menuItem.addActionListener((event) -> {
                 try {
+                    // 这里每次都是重新下载 可以进行改进
                     imageComponent.setIcon(new ImageProxy(new URL(url)));
                     frame.repaint();
                 } catch (MalformedURLException e) {
